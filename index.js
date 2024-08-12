@@ -10,9 +10,10 @@ const { fetchBrands } = require("./controller/Brand");
 
 const port = 8080;
 
+const cors = require("cors");
+server.use(cors());
 // middleware
 server.use(express.json()); // for parsing application/json
-
 server.use("/products", productRouter.router);
 server.use("/categories", categoryRouter.router);
 server.use("/brands", BrandRouter.router);
