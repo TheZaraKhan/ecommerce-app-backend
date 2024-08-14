@@ -1,33 +1,44 @@
 const mongoose = require("mongoose");
 
-const categorySchema = new mongoose.Schema({
-  label: {
+const Mixed = mongoose.Schema.Types.Mixed;
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  email: {
     type: String,
     required: true,
     unique: true,
-  },
-  value: {
-    type: String,
     required: true,
-    unique: true,
   },
-  checked: {
-    type: Boolean,
+  password: {
+    type: String,
     default: false,
+    required: true,
+  },
+  role: {
+    type: String,
+    default: "user",
+  },
+  addresses: {
+    type: [Mixed],
+    default: [],
   },
 });
 
-const Category = mongoose.model("Category", categorySchema);
-module.exports = Category;
+const User = mongoose.model("User", userSchema);
+module.exports = User;
 
 // below is for virtual key  in mongo it already created id using "_id"
 // whereas in our application we are calling id as "id"
-const virtual = categorySchema.virtual("id");
+const virtual = userSchema.virtual("id");
 virtual.get(function () {
   return this._id;
 });
 
-categorySchema.set("toJSON", {
+userSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
