@@ -10,6 +10,8 @@ const categoryRouter = require("./routes/Category");
 const brandRouter = require("./routes/Brand");
 const userRouter = require("./routes/User");
 const authRouter = require("./routes/Auth");
+const cartRouter = require("./routes/Cart");
+const ordersRouter = require("./routes/Order");
 
 // middleware
 server.use(cors());
@@ -19,6 +21,8 @@ server.use("/categories", categoryRouter.router);
 server.use("/brands", brandRouter.router);
 server.use("/users", userRouter.router);
 server.use("/auth", authRouter.router);
+server.use("/cart", cartRouter.router);
+server.use("/orders", ordersRouter.router);
 
 async function main() {
   await mongoose.connect("mongodb://localhost:27017/ecommerce-app");

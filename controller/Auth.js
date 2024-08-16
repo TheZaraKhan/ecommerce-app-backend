@@ -36,18 +36,24 @@ exports.loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email }).exec();
     if (!user) {
-      res.status(401).json({ message: "Invalid credentials" });
-    } else if (user.password === req.body.password) {
-      res.status(200).json({
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-      });
-    } else {
-      res.status(401).json({ message: "Invalid credentials" });
+      // Email not found
+      return res.status(401).json({ message: "Invalid email" });
     }
+
+    if (user.password !== req.body.password) {
+      // Password does not match
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // Successful login
+    res.status(200).json({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+    });
   } catch (err) {
-    res.status(400).json(err);
+    // Generic error handling
+    res.status(400).json({ message: "An error occurred", error: err.message });
   }
 };
