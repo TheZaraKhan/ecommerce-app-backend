@@ -10,21 +10,12 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.createProduct = async (req, res) => {
-  const product = new Product(req.body);
-  try {
-    const result = await product.save();
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-};
-
 exports.fetchAllProducts = async (req, res) => {
-  let query = Product.find({});
+  let query = Product.find({ delete: { $ne: true } });
 
-  //the total products should be the count after filters
-  let totalProducts = Product.find({});
+  // Adjust totalProducts query to exclude deleted items
+  let totalProducts = Product.countDocuments({ delete: { $ne: true } });
+
   //   const totalObjects = await Product.countDocuments(query).exec();
   //   console.log({ totalObjects });
 
@@ -51,8 +42,9 @@ exports.fetchAllProducts = async (req, res) => {
   }
 
   // we need this  product count for pagination
+
   const totalObjects = await totalProducts.countDocuments().exec();
-  res.set("X-Total-Count", totalObjects);
+  res.setHeader("X-Total-Count", totalObjects);
   console.log({ totalObjects });
 
   if (req.query._page && req.query._limit) {

@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   address: {
-    type: [Mixed],
+    type: Mixed,
     required: true,
   },
   status: {

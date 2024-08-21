@@ -15,6 +15,11 @@ const ordersRouter = require("./routes/Order");
 
 // middleware
 server.use(cors());
+server.use(
+  cors({
+    exposedHeaders: ["X-Total-Count"],
+  })
+);
 server.use(express.json()); // for parsing application/json
 server.use("/products", productRouter.router);
 server.use("/categories", categoryRouter.router);
